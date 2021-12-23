@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+ - name: stripe
+   description: A copy of a Postgres application database.
+   database: dbt-tutorial
+   tables:
+     - name: payment
+       loaded_at_field: "CAST(created AS TIMESTAMP)"
+       freshness: 
+         warn_after: {count: 1, period: hour}
+         error_after: {count: 100000000, period: hour}
+       description: Raw payment data.
+       columns:
+         - name: payment_id
+           description: primary key for payment
+           tests:
+             - not_null 
